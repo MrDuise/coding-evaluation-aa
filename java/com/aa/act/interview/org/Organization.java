@@ -28,16 +28,16 @@ public abstract class Organization {
     }
 
 
-    private Optional<Position> findPosition(Position root, String title) {
-        if (root == null) {
+    private Optional<Position> findPosition(Position position, String title) {
+        if (position == null) {
             return Optional.empty();
         }
 
-        if (root.getTitle().equals(title)) {
-            return Optional.of(root);
+        if (position.getTitle().equals(title)) {
+            return Optional.of(position);
         }
 
-        for (Position report : root.getDirectReports()) {
+        for (Position report : position.getDirectReports()) {
             Optional<Position> result = findPosition(report, title);
             if (result.isPresent()) {
                 return result;
