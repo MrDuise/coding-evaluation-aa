@@ -5,10 +5,11 @@ import java.util.Optional;
 public abstract class Organization {
 
     private Position root;
-    private int employeeNumber = 0;
+    private int employeeNumber;
 
     public Organization() {
         root = createOrganization();
+        employeeNumber = 0;
     }
     
     protected abstract Position createOrganization();
