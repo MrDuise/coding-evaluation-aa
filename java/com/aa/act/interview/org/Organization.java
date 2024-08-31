@@ -5,7 +5,8 @@ import java.util.Optional;
 public abstract class Organization {
 
     private Position root;
-    
+    private int employeeNumber = 0;
+
     public Organization() {
         root = createOrganization();
     }
@@ -20,7 +21,28 @@ public abstract class Organization {
      * @return the newly filled position or empty if no position has that title
      */
     public Optional<Position> hire(Name person, String title) {
-        //your code here
+        Optional<Position> pos = findPosition(this.root, title);
+        pos.ifPresent(position -> position.setEmployee(Optional.of(new Employee(++this.employeeNumber, person))));
+        return pos;
+    }
+
+
+    private Optional<Position> findPosition(Position root, String title) {
+        if (root == null) {
+            return Optional.empty();
+        }
+
+        if (root.getTitle().equals(title)) {
+            return Optional.of(root);
+        }
+
+        for (Position report : root.getDirectReports()) {
+            Optional<Position> result = findPosition(report, title);
+            if (result.isPresent()) {
+                return result;
+            }
+        }
+
         return Optional.empty();
     }
 
