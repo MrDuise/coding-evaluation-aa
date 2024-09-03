@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project is a simple Java-based system that implements the hiring function for an organization. To make the project easier to run, share, and extend, I updated it to use **Gradle (version 8.10)** for dependency management and build automation, while keeping the functionality the same as required in the assessment.
+This project is a simple Java-based system that implements the hiring function for an organization. To make the project easier to run, share, and extend, I updated it to use **Gradle (version 8.10)** for dependency management and build automation, while keeping the functionality the same as required in the assessment. For simplicity the other languages are removed from this branch, and the 'java' folder is the project root directory.
 
 The project is now compiled using **Java 17**.
 
