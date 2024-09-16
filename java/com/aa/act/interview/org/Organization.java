@@ -47,7 +47,7 @@ public abstract class Organization {
         if (directReportsByTitle.containsKey(title)) {
             List<Position> matchingPositions = directReportsByTitle.get(title);
 
-            // If there are multiple positions with the same title, return the first found
+
             for (Position report : matchingPositions) {
                 if(!report.isFilled()){
                     return Optional.of(report);  // return the first matching position that is not filled
@@ -56,17 +56,17 @@ public abstract class Organization {
             }
         }
 
-        // If no matching positions are found directly, recursively search in the direct reports of each position
+
         for (List<Position> reportsList : directReportsByTitle.values()) {
             for (Position report : reportsList) {
-                Optional<Position> result = findPosition(report, title);  // Recursive search
+                Optional<Position> result = findPosition(report, title);
                 if (result.isPresent()) {
                     return result;
                 }
             }
         }
 
-        return Optional.empty();  // If no position is found
+        return Optional.empty();
     }
 
 
