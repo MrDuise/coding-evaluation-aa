@@ -27,6 +27,9 @@ public class MyOrganization extends Organization {
         vpt.addDirectReport(dct);
         Position s = new Position("Salesperson");
         vps.addDirectReport(s);
+        //second sales person position
+        Position sp = new Position("Salesperson");
+        vps.addDirectReport(sp);
         
         return ceo;
     }
@@ -44,6 +47,8 @@ public class MyOrganization extends Organization {
         myOrg.hire(new Name("Head", "Geek"), "VP Technology");
         myOrg.hire(new Name("Steve", "Dent"), "VP Infrastructure");
         myOrg.hire(new Name("Slick", "Willie"), "Salesperson");
+        //second sales person hire
+        myOrg.hire(new Name("Second", "Willie2"), "Salesperson");
         System.out.println(myOrg);
     }
 }

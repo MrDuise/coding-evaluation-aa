@@ -1,57 +1,65 @@
 package com.aa.act.interview.org;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public class Position {
 
     private String title;
     private Optional<Employee> employee;
-    private Set<Position> directReports;
-    
+    // Changed directReports to a Map where key is title and value is a list of positions with the same title
+    private Map<String, List<Position>> directReports;
+
     public Position(String title) {
         this.title = title;
         employee = Optional.empty();
-        directReports = new HashSet<Position>();
+        directReports = new HashMap<>();
     }
 
     public Position(String title, Employee employee) {
         this(title);
-        if(employee != null)
+        if (employee != null)
             setEmployee(Optional.of(employee));
     }
-    
+
     public String getTitle() {
         return title;
     }
-    
+
     public void setEmployee(Optional<Employee> employee) {
         this.employee = employee;
     }
-    
+
     public Optional<Employee> getEmployee() {
         return employee;
     }
-    
+
     public boolean isFilled() {
         return employee.isPresent();
     }
-    
-    public boolean addDirectReport(Position position) {
-        if(position == null)
+
+
+    public void addDirectReport(Position position) {
+        if (position == null)
             throw new IllegalArgumentException("position cannot be null");
-        return directReports.add(position);
+
+        directReports.computeIfAbsent(position.getTitle(), k -> new ArrayList<>()).add(position);
     }
-    
-    public boolean removePosition(Position position) {
-        return directReports.remove(position);
+
+    // Remove a direct report from the map based on title
+    public boolean removeDirectReport(Position position) {
+        if (position == null)
+            return false;
+
+        List<Position> positions = directReports.get(position.getTitle());
+        if (positions != null) {
+            return positions.remove(position);
+        }
+        return false;
     }
-    
-    public Collection<Position> getDirectReports() {
-        return Collections.unmodifiableCollection(directReports);
+
+    // Retrieve all direct reports
+    public Map<String, List<Position>> getDirectReports() {
+        return directReports;
     }
 
     @Override

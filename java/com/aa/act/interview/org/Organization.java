@@ -1,5 +1,7 @@
 package com.aa.act.interview.org;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public abstract class Organization {
@@ -33,30 +35,60 @@ public abstract class Organization {
             return Optional.empty();
         }
 
+
+        Map<String, List<Position>> directReportsByTitle = position.getDirectReports();
+
+        // Check if the current position has the desired title
         if (position.getTitle().equals(title)) {
             return Optional.of(position);
         }
 
-        for (Position report : position.getDirectReports()) {
-            Optional<Position> result = findPosition(report, title);
-            if (result.isPresent()) {
-                return result;
+        // Check if there are any direct reports with the matching title
+        if (directReportsByTitle.containsKey(title)) {
+            List<Position> matchingPositions = directReportsByTitle.get(title);
+
+            // If there are multiple positions with the same title, return the first found
+            for (Position report : matchingPositions) {
+                if(!report.isFilled()){
+                    return Optional.of(report);  // return the first matching position that is not filled
+                }
+
             }
         }
 
-        return Optional.empty();
+        // If no matching positions are found directly, recursively search in the direct reports of each position
+        for (List<Position> reportsList : directReportsByTitle.values()) {
+            for (Position report : reportsList) {
+                Optional<Position> result = findPosition(report, title);  // Recursive search
+                if (result.isPresent()) {
+                    return result;
+                }
+            }
+        }
+
+        return Optional.empty();  // If no position is found
     }
+
 
     @Override
     public String toString() {
         return printOrganization(root, "");
     }
-    
+
     private String printOrganization(Position pos, String prefix) {
         StringBuffer sb = new StringBuffer(prefix + "+-" + pos.toString() + "\n");
-        for(Position p : pos.getDirectReports()) {
-            sb.append(printOrganization(p, prefix + "  "));
+
+
+        Map<String, List<Position>> directReportsByTitle = pos.getDirectReports();
+
+
+        for (List<Position> reportsList : directReportsByTitle.values()) {
+            for (Position report : reportsList) {
+                sb.append(printOrganization(report, prefix + "  "));  // Recursive call with updated prefix
+            }
         }
+
         return sb.toString();
     }
+
 }
